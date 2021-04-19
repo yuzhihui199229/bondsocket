@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huayun.bond.dao.AssetDao">
+    <select id="qryAssetCount" resultType="int">
+        SELECT count(1) FROM
+        TB_ASSET a,
+        TB_STOCKHOLDERINFO c
+        <where>
+            c.ACCOUNTID = a.ACCOUNTID
+            AND c.USERID IN (SELECT USERID FROM TB_ASSETINFO)
+            <if test="userId!=null and userId!=''">
+                and c.USERID=#{userId}
+            </if>
+            <if test="asset.accountId!=null and asset.accountId!=''">
+                AND a.ACCOUNTID=#{asset.accountId}
+            </if>
+            <if test="asset.id!=null and asset.id!=''">
+                AND a.id=#{asset.id}
+            </if>
+            <if test="asset.securityId!=null and asset.securityId!=''">
+                AND a.EXECID=#{asset.securityId}
+            </if>
+            <if test="startTime!=null and startTime!=''">
+                and a.CREATETIME &gt;= #{startTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and a.CREATETIME &lt; #{endTime}
+            </if>
+        </where>
+    </select>
+
+    <resultMap id="assetMap" type="asset">
+        <id column="id" property="id"/>
+        <result column="securityId" property="securityId"/>
+        <result column="securityIdSource" property="securityIdSource"/>
+        <result column="accountId" property="accountId"/>
+        <result column="holdId" property="holdId"/>
+        <result column="execId" property="execId"/>
+        <result column="fromBalance" property="fromBalance"/>
+        <result column="fromFronze" property="fromFronze"/>
+        <result column="toBalance" property="toBalance"/>
+        <result column="toFronze" property="toFronze"/>
+        <result column="createTime" property="createTime"/>
+        <association property="stockHolder" javaType="stockHolder">
+            <result column="userId" property="userId"/>
+        </association>
+    </resultMap>
+
+    <select id="qryAsset" resultMap="assetMap">
+        SELECT
+        a.ID AS id,
+        a.SECURITYID AS securityId,
+        a.SECURITYIDSOURCE AS securityIdSource,
+        a.ACCOUNTID AS accountId,
+        a.HOLDID AS holdId,
+        a.EXECID AS execId,
+        a.FROMBALANCE AS fromBalance,
+        a.FROMFRONZE AS fromFronze,
+        a.TOBALANCE AS toBalance,
+        a.TOFRONZE AS toFronze,
+        a.CREATETIME AS createTime,
+        c.USERID AS userId
+        FROM
+        TB_ASSET a,
+        TB_STOCKHOLDERINFO c
+        <where>
+        c.ACCOUNTID = a.ACCOUNTID
+        AND c.USERID IN (SELECT USERID FROM TB_ASSETINFO)
+            <if test="userId!=null and userId!=''">
+                and c.USERID=#{userId}
+            </if>
+            <if test="asset.accountId!=null and asset.accountId!=''">
+                AND a.ACCOUNTID=#{asset.accountId}
+            </if>
+            <if test="asset.id!=null and asset.id!=''">
+                AND a.id=#{asset.id}
+            </if>
+            <if test="asset.securityId!=null and asset.securityId!=''">
+                AND a.EXECID=#{asset.securityId}
+            </if>
+            <if test="startTime!=null and startTime!=''">
+                and a.CREATETIME &gt;= #{startTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and a.CREATETIME &lt; #{endTime}
+            </if>
+        </where>
+        limit #{offset},#{row}
+    </select>
+</mapper>

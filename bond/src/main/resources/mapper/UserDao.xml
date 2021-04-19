@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huayun.bond.dao.UserDao">
+    <select id="qryUserInfoCount" resultType="int">
+        select count(1) as count from TB_USERINFO
+        <where>
+            <if test="userId!=null and userId!=''">
+                USERID=#{userId}
+            </if>
+            <if test="userPropty!=null and userPropty!=''">
+                and USERPROPTY=#{userPropty}
+            </if>
+            <if test="status!=null and status!=''">
+                and status=#{status}
+            </if>
+        </where>
+    </select>
+
+    <select id="qryUserInfo" resultType="userInfo">
+        SELECT USERID as userId,USERNAME as userName,COMPANYID as companyId,phone,USERACCOUNT as userAccount,USERPROPTY as userPropty, status,CREATETIME as createTime,UPDATETIME as updateTime FROM TB_USERINFO
+        <where>
+            <if test="userId!=null and userId != ''">
+                USERID=#{userId}
+            </if>
+            <if test="status!=null and status != ''">
+                status=#{status}
+            </if>
+            <if test="userPropty!=null and userPropty != ''">
+                USERPROPTY=#{userPropty}
+            </if>
+        </where>
+    </select>
+</mapper>

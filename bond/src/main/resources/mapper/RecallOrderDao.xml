@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huayun.bond.dao.RecallOrderDao">
+    <select id="qryRecallOrderCount" resultType="int">
+        select count(1) as count from TB_190007 a,TB_100101 b
+        <where>
+            <if test="clOrdID!=null and clOrdID!=''">
+                CLORDID=#{clOrdID}
+            </if>
+            and a.CLORDID=b.CLORDID
+            <if test="startTime!=null and startTime!=''">
+                and TRANSACTTIME &gt;= startTime
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and TRANSACTTIME &lt; endTime
+            </if>
+        </where>
+    </select>
+
+    <resultMap id="recallOrderMap" type="recallOrder">
+        <result column="submittingPBUID" property="submittingPBUID"/>
+        <result column="securityID" property="securityID"/>
+        <result column="securityIDSource" property="securityIDSource"/>
+        <result column="ownerType" property="ownerType"/>
+        <result column="clearingFirm" property="clearingFirm"/>
+        <result column="transactTime" property="transactTime"/>
+        <result column="userInfo" property="userInfo"/>
+        <result column="clOrdID" property="clOrdID"/>
+        <result column="origClOrdID" property="origClOrdID"/>
+        <result column="side" property="side"/>
+        <result column="orderID" property="orderID"/>
+        <result column="orderQty" property="orderQty"/>
+        <result column="ordStatus" property="ordStatus"/>
+        <result column="ordStatus" property="ordStatus"/>
+        <association property="order" javaType="order">
+            <result column="ordType" property="ordType"/>
+            <result column="price" property="price"/>
+            <result column="accountID" property="accountID"/>
+            <result column="branchID" property="branchID"/>
+            <result column="orderRestrictions" property="orderRestrictions"/>
+            <result column="minQty" property="minQty"/>
+            <result column="maxPriceLevels" property="maxPriceLevels"/>
+            <result column="timeInforce" property="timeInforce"/>
+            <result column="orderQty101" property="orderQty"/>
+        </association>
+    </resultMap>
+
+    <select id="qryRecallOrder" resultMap="recallOrderMap">
+        select a.SUBMITTINGPBUID as submittingPBUID,a.SECURITYID as securityID, a.SECURITYIDSOURCE as securityIDSource,
+        a.OWNERTYPE as ownerType, a.CLEARINGFIRM as clearingFirm,a.TRANSACTTIME as transactTime, a.USERINFO as userInfo,
+        a.CLORDID as clOrdID,a.ORIGCLORDID as origClOrdID,a.side as side,a.ORDERID as orderID, a.ORDERQTY as orderQty,
+        a.ORDSTATUS as ordStatus,b.ORDTYPE as ordType,b.price as price,b.ACCOUNTID as accountID,
+        b.BRANCHID as branchID,b.ORDERRESTRICTIONS as orderRestrictions,b.MINQTY as minQty,b.MAXPRICELEVELS as
+        maxPriceLevels,b.ORDERQTY as orderQty101,
+        b.TIMEINFORCE as timeInforce from TB_190007 a,TB_100101 b
+        <where>
+            <if test="clOrdID!=null and clOrdID!=''">
+                a.CLORDID=#{clOrdID}
+            </if>
+            and a.CLORDID=b.CLORDID
+            <if test="startTime!=null and startTime!=''">
+                and a.TRANSACTTIME &gt;= #{startTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and a.TRANSACTTIME &lt; #{endTime}
+            </if>
+        </where>
+        limit #{offset},#{row}
+    </select>
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huayun.bond.dao.StockHolderDao">
+    <select id="qryStockHolderInfoCount" resultType="int">
+        select count(1) as count from TB_STOCKHOLDERINFO
+        <where>
+            <if test="userId!=null and userId!=''">
+                USERID=#{userId}
+            </if>
+            <if test="accountId!=null and accountId!=''">
+                and ACCOUNTID=#{accountId}
+            </if>
+        </where>
+    </select>
+
+    <select id="qryStockHolderInfo" resultType="stockHolder">
+        SELECT USERID as userId,ACCOUNTID as accountId,ACCOUNTTYPE as accountType,status,CREATETIME as createTime,UPDATETIME as updateTime FROM TB_STOCKHOLDERINFO
+        <where>
+            <if test="userId!=null and userId!=''">
+                USERID=#{userId}
+            </if>
+            <if test="accountId!=null and accountId!=''">
+                and ACCOUNTID=#{accountId}
+            </if>
+        </where>
+    </select>
+</mapper>

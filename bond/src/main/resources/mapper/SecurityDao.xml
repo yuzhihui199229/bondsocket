@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huayun.bond.dao.SecurityDao">
+    <select id="qrySecurityCount" resultType="int">
+        select count(1) as count from TB_SECURITYINFO
+        <where>
+            <if test="securityID!=null and securityID!=''">
+                SECURITYID=#{securityID}
+            </if>
+        </where>
+    </select>
+
+    <select id="qrySecurity" resultType="security">
+        select SECURITYID as securityID, SECURITYIDSOURCE as securityIDSource,SECURITYNAME as securityName,STATUS, MINQTY as minQty,MAXQTY as maxQty, FEERATE as feeRate,TRADETIMEGROUP as tradeTimeGroup,UPDATETIME as updateTime from TB_SECURITYINFO
+        <where>
+            <if test="securityID!=null and securityID!=''">
+                SECURITYID=#{securityID}
+            </if>
+        </where>
+        limit #{offset},#{row}
+    </select>
+</mapper>

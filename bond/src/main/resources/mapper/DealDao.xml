@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huayun.bond.dao.DealDao">
+    <select id="qryDealCount" resultType="int">
+        select count(1) as count from TB_200115
+        <where>
+            <if test="clOrdID!=null and clOrdID!=''">
+                CLORDID=#{clOrdID}
+            </if>
+            <if test="startTime!=null and startTime!=''">
+                and TRANSACTTIME &gt;= #{startTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and TRANSACTTIME &lt; #{endTime}
+            </if>
+        </where>
+    </select>
+
+    <resultMap id="dealMap" type="deal">
+        <result column="partitionNo" property="partitionNo"/>
+        <result column="reportIndex" property="reportIndex"/>
+        <result column="applID" property="applID"/>
+        <result column="reportingPBUID" property="reportingPBUID"/>
+        <result column="securityID" property="securityID"/>
+        <result column="securityIDSource" property="securityIDSource"/>
+        <result column="ownerType" property="ownerType"/>
+        <result column="clearingFirm" property="clearingFirm"/>
+        <result column="transactTime" property="transactTime"/>
+        <result column="userInfo" property="userInfo"/>
+        <result column="orderID" property="orderID"/>
+        <result column="clOrdID" property="clOrdID"/>
+        <result column="execID" property="execID"/>
+        <result column="execType" property="execType"/>
+        <result column="ordStatus" property="ordStatus"/>
+        <result column="lastPx" property="lastPx"/>
+        <result column="lastQty" property="lastQty"/>
+        <result column="leavesQty" property="leavesQty"/>
+        <result column="cumQty" property="cumQty"/>
+        <result column="side" property="side"/>
+        <result column="accountID" property="accountID"/>
+        <result column="branchID" property="branchID"/>
+        <result column="cashMargin" property="cashMargin"/>
+        <association property="recallOrderSuccess" javaType="recallOrderSuccess">
+            <result column="ordType" property="ordType"/>
+            <result column="orderQty" property="orderQty"/>
+            <result column="price" property="price"/>
+            <result column="orderRestrictions" property="orderRestrictions"/>
+            <result column="minQty" property="minQty"/>
+            <result column="maxPriceLevels" property="maxPriceLevels"/>
+            <result column="timeInforce" property="timeInforce"/>
+            <result column="origClOrdId" property="origClOrdId"/>
+            <result column="OrigorderId" property="orderId"/>
+        </association>
+    </resultMap>
+
+    <select id="qryDeal" resultMap="dealMap">
+        select a.PARTITIONNO as partitionNo,a.REPORTINDEX as reportIndex, a.APPLID as applID,
+        a.REPORTINGPBUID as reportingPBUID, a.SUBMITTINGPBUID as submittingPBUID,a.SECURITYID as securityID,
+        a.SECURITYIDSOURCE as securityIDSource,a.OWNERTYPE as ownerType,a.CLEARINGFIRM as clearingFirm,
+        a.TRANSACTTIME as transactTime,a.USERINFO as userInfo,a.ORDERID as orderID, a.CLORDID as clOrdID,
+        a.EXECID as execID,a.EXECTYPE as execType,a.ORDSTATUS as ordStatus, a.LASTPX as lastPx,
+        a.LASTQTY as lastQty,a.LEAVESQTY as leavesQty,a.CUMQTY as cumQty,a.side as side,a.ACCOUNTID as accountID,
+        a.BRANCHID as branchID,a.CASHMARGIN as cashMargin,b.ORDTYPE AS ordType,b.ORDERQTY as orderQty,
+        b.price as price,b.ORDERRESTRICTIONS as orderRestrictions,b.MINQTY as minQty,b.MAXPRICELEVELS as maxPriceLevels,
+        b.TIMEINFORCE as timeInforce ,b.ORIGCLORDID as origClOrdId,b.ORDERID as OrigorderId from TB_200115 a,TB_200102 b
+        <where>
+            <if test="clOrdID!=null and clOrdID!=''">
+                CLORDID=#{clOrdID}
+            </if>
+            and a.CLORDID=b.CLORDID
+            <if test="startTime!=null and startTime!=''">
+                and a.TRANSACTTIME &gt;= #{startTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and a.TRANSACTTIME &lt; #{endTime}
+            </if>
+        </where>
+        limit #{offset},#{row}
+    </select>
+</mapper>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huayun.bond.dao.TellerDao">
+    <select id="login" resultType="userInfo">
+        SELECT USERID as userId,USERPASSWORD as userpassword,status FROM TB_TELLINFO
+        <where>
+            USERID=#{userId}
+            and USERPASSWORD = MD5(#{userpassword})
+        </where>
+    </select>
+
+    <insert id="addSession">
+        insert into TB_SESSION(USERID,SESSIONID,TOKEN,CREATETIME,UPDATETIME)
+        values(#{userInfo.userId},#{session},#{session},DATE_FORMAT(NOW(),'%Y%m%d%H%i%s'),DATE_FORMAT(NOW(),'%Y%m%d%H%i%s'))
+    </insert>
+
+    <!--获取信息-->
+    <select id="getToken" resultType="session">
+         SELECT USERID as userId,  SESSIONID as sessionId,TOKEN as token,CLIENTTYPE as clientType,
+          CREATETIME as createTime,UPDATETIME as updateTime,(DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')-UPDATETIME) as tokenTime
+          FROM TB_SESSION WHERE TOKEN = #{token}
+    </select>
+
+    <!--修改信息-->
+    <update id="updateToken">
+        UPDATE TB_SESSION
+        <set>
+            UPDATETIME=DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+        </set>
+        WHERE TOKEN=#{token}
+    </update>
+
+    <!--修改用户状态-->
+    <update id="updateStatus">
+        UPDATE TB_TELLINFO
+        <set>
+            STATUS=#{status}
+        </set>
+        <where>
+            <if test="userId!=null and userId != ''">
+                USERID=#{userId}
+            </if>
+        </where>
+    </update>
+
+    <!--查询用户信息-->
+    <select id="qryTellerInfo" resultType="tellerInfo">
+        SELECT USERID as userId,USERNAME as userName,CLIENTTYPE as clientType, status,ROLEID as roleId,CREATETIME as
+        createTime,UPDATETIME as updateTime FROM TB_TELLINFO
+        <where>
+            <if test="userId!=null and userId != ''">
+                USERID=#{userId}
+            </if>
+            <if test="status!=null and status != ''">
+                status=#{status}
+            </if>
+        </where>
+    </select>
+
+    <select id="qryTellerInfoCount" resultType="int">
+        select count(1) as count from TB_TELLINFO
+        <where>
+            <if test="userId!=null and userId != ''">
+                USERID=#{userId}
+            </if>
+            <if test="status!=null and status != ''">
+                status=#{status}
+            </if>
+        </where>
+    </select>
+</mapper>

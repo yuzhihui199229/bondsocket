@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huayun.bond.dao.AssetInfoDao">
+    <select id="qryAssetInfoCount" resultType="int">
+        select count(1) as count from TB_ASSETINFO
+        <where>
+            <if test="userId!=null and userId!=''">
+                USERID=#{userId}
+            </if>
+        </where>
+    </select>
+
+    <select id="qryAssetInfo" resultType="assetInfo">
+        select USERID as userId, ASSETACCOUNT as assetAccount,balance,frozen,CREATETIME AS createTime, updateTime from TB_ASSETINFO
+        <where>
+            <if test="userId!=null and userId!=''">
+                USERID=#{userId}
+            </if>
+        </where>
+    </select>
+</mapper>

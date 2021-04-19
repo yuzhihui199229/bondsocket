@@ -116,7 +116,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<MessageProto
                     case 28705://资金流水查询0x7021
                         result = assetService.qryAsset(msg);
                         break;
-                    case 28706://时间组
+                    case 28706://时间组0x7021
                         result = tradeTimeGroupService.QryTradeTimeInfo(msg);
                         break;
 //                    default:

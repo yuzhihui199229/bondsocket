@@ -26,13 +26,13 @@ public class UserService {
         System.arraycopy(buf, 32, userByte, 0, 12);
         String userId = ByteUtil.getString(userByte);
         //转化为status
-        byte[] statusByte = new byte[3];
-        System.arraycopy(buf, 44, userByte, 0, 2);
+        byte[] statusByte = new byte[2];
+        System.arraycopy(buf, 44, statusByte, 0, 2);
         short statusShort = ByteUtil.getShort(statusByte);
         //转化为userPropty
-        byte[] userProptyByte = new byte[3];
+        byte[] userProptyByte = new byte[2];
         System.arraycopy(buf, 46, userProptyByte, 0, 2);
-        Short userPropty = ByteUtil.getShort(statusByte);
+        Short userPropty = ByteUtil.getShort(userProptyByte);
         UserInfo userInfo = new UserInfo();
         userInfo.setUserId(userId);
         userInfo.setStatus(statusShort);
@@ -96,7 +96,7 @@ public class UserService {
             }
             System.arraycopy(userInfoByte, 0, userInfoBytes,(i - 1) * 132, 132);
         }
-        MessageProtocol result = msg;
+        MessageProtocol result = new MessageProtocol();
         byte[] content = new byte[36 + 132 * count];
         String comment = ResponseMsg.OK.getMsg();
         byte[] commentBytes = comment.getBytes();
@@ -104,8 +104,8 @@ public class UserService {
         byte[] countBytes = ByteUtil.getBytes(count);
         System.arraycopy(countBytes, 0, content, 32, countBytes.length);
         System.arraycopy(userInfoBytes, 0, content, 36, userInfoBytes.length);
-        msg.setLen(68 + 132 * count);
-        msg.setUiRetCode(ResponseMsg.OK.getRetCode());
+        result.setLen(68 + 132 * count);
+        result.setUiRetCode(ResponseMsg.OK.getRetCode());
         result.setSzMagicNum(msg.getSzMagicNum());
         result.setByVersion(msg.getByVersion());
         result.setByMsgType((byte)2);

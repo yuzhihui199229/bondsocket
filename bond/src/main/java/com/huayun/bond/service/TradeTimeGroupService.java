@@ -26,7 +26,7 @@ public class TradeTimeGroupService {
         List<TradeTimeInfo> tradeTimeInfos = tradeTimeGroupDao.qryTradeTimeGroup(tradeTimeGroup);
         int count = tradeTimeGroupDao.qryCount(tradeTimeGroup);
         int i=0;
-        byte[] tradeTimeInfoBytes = new byte[60*count];
+        byte[] tradeTimeInfoBytes = new byte[60*tradeTimeInfos.size()];
         for (TradeTimeInfo tradeTimeInfo : tradeTimeInfos) {
             i++;
             byte[] tradeTimeInfoByte = new byte[60];
@@ -63,14 +63,14 @@ public class TradeTimeGroupService {
             System.arraycopy(tradeTimeInfoByte,0,tradeTimeInfoBytes,(i-1)*60,60);
         }
         MessageProtocol result = new MessageProtocol();
-        byte[] content = new byte[36 + 60 * count];
+        byte[] content = new byte[36 + 60 * tradeTimeInfos.size()];
         String comment = ResponseMsg.OK.getMsg();
         byte[] commentBytes = comment.getBytes();
         System.arraycopy(commentBytes, 0, content, 0, commentBytes.length);
         byte[] countBytes = ByteUtil.getBytes(count);
         System.arraycopy(countBytes, 0, content, 32, countBytes.length);
         System.arraycopy(tradeTimeInfoBytes, 0, content, 36, tradeTimeInfoBytes.length);
-        result.setLen(68 + 60 * count);
+        result.setLen(68 + 60 * tradeTimeInfos.size());
         result.setUiRetCode(ResponseMsg.OK.getRetCode());
         result.setSzMagicNum(msg.getSzMagicNum());
         result.setByVersion(msg.getByVersion());

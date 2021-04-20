@@ -46,8 +46,7 @@ public class OrderService {
         long endTime = ByteUtil.getLong(endTimeByte);
         List<Order> orders = orderDao.qryOrder(clOrdID, (page - 1) * num, num,startTime,endTime);
         int count = orderDao.qryOrderCount(clOrdID,startTime,endTime);
-        int contentLen = count >= num ? num : count;
-        byte[] orderDataBytes = new byte[107 * contentLen];
+        byte[] orderDataBytes = new byte[107 *orders.size()];
         int i = 0;
         //数据转化为byte[]
         for (Order order : orders) {
@@ -156,14 +155,14 @@ public class OrderService {
             System.arraycopy(orderDataByte, 0, orderDataBytes, (i - 1) * 107, 107);
         }
         MessageProtocol result = new MessageProtocol();
-        byte[] content = new byte[36 + 107 * contentLen];
+        byte[] content = new byte[36 + 107 * orders.size()];
         String comment = ResponseMsg.OK.getMsg();
         byte[] commentBytes = comment.getBytes();
         System.arraycopy(commentBytes, 0, content, 0, commentBytes.length);
         byte[] countBytes = ByteUtil.getBytes(count);
         System.arraycopy(countBytes, 0, content, 32, countBytes.length);
         System.arraycopy(orderDataBytes, 0, content, 36, orderDataBytes.length);
-        result.setLen(68 + 107 * contentLen);
+        result.setLen(68 + 107 * orders.size());
         result.setUiRetCode(ResponseMsg.OK.getRetCode());
         result.setSzMagicNum(msg.getSzMagicNum());
         result.setByVersion(msg.getByVersion());

@@ -43,8 +43,7 @@ public class DealService {
         long endTime = ByteUtil.getLong(endTimeByte);
         List<Deal> deals = dealDao.qryDeal(clOrdID, (page - 1) * num, num, startTime, endTime);
         int count = dealDao.qryDealCount(clOrdID, startTime, endTime);
-        int contentLen = count >= num ? num : count;
-        byte[] dealBytes = new byte[211 * contentLen];
+        byte[] dealBytes = new byte[211 * deals.size()];
         int i = 0;
         //数据转化
         for (Deal deal : deals) {
@@ -214,14 +213,14 @@ public class DealService {
         }
         //封装数据格式
         MessageProtocol result = new MessageProtocol();
-        byte[] content = new byte[36 + 211 * contentLen];
+        byte[] content = new byte[36 + 211 * deals.size()];
         String comment = ResponseMsg.OK.getMsg();
         byte[] commentBytes = comment.getBytes();
         System.arraycopy(commentBytes, 0, content, 0, commentBytes.length);
         byte[] countBytes = ByteUtil.getBytes(count);
         System.arraycopy(countBytes, 0, content, 32, countBytes.length);
         System.arraycopy(dealBytes, 0, content, 36, dealBytes.length);
-        result.setLen(68 + 211 * count);
+        result.setLen(68 + 211 * deals.size());
         result.setUiRetCode(ResponseMsg.OK.getRetCode());
         result.setSzMagicNum(msg.getSzMagicNum());
         result.setByVersion(msg.getByVersion());

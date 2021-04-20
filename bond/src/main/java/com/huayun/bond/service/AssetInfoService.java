@@ -26,7 +26,7 @@ public class AssetInfoService {
         String userId = ByteUtil.getString(userIdBytes);
         List<AssetInfo> assetInfos = assetInfoDao.qryAssetInfo(userId);
         int count = assetInfoDao.qryAssetInfoCount(userId);
-        byte[] assetInfoBytes = new byte[76*count];
+        byte[] assetInfoBytes = new byte[76*assetInfos.size()];
         int i = 0;
         for (AssetInfo assetInfo : assetInfos) {
             ++i;
@@ -71,7 +71,7 @@ public class AssetInfoService {
         byte[] countBytes = ByteUtil.getBytes(count);
         System.arraycopy(countBytes, 0, content, 32, countBytes.length);
         System.arraycopy(assetInfoBytes, 0, content, 36, assetInfoBytes.length);
-        result.setLen(68 + 76 * count);
+        result.setLen(68 + 76 * assetInfos.size());
         result.setUiRetCode(ResponseMsg.OK.getRetCode());
         result.setSzMagicNum(msg.getSzMagicNum());
         result.setByVersion(msg.getByVersion());

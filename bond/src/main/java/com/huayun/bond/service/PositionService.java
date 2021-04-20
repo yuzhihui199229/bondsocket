@@ -49,8 +49,7 @@ public class PositionService {
         //查询position
         List<Position> positions = positionDao.qryPosition(position, (page - 1) * num, num,startTime,endTime);
         int count = positionDao.qryPositionCount(position,startTime,endTime);
-        int contentLen = count >= num ? num : count;
-        byte[] positionBytes = new byte[100 * contentLen];
+        byte[] positionBytes = new byte[100 * positions.size()];
         int i = 0;
         for (Position positionBean : positions) {
             ++i;
@@ -119,14 +118,14 @@ public class PositionService {
             System.arraycopy(positionBeanByte, 0, positionBytes, (i - 1) * 100, 100);
         }
         MessageProtocol result = new MessageProtocol();
-        byte[] content = new byte[36 + 100 * contentLen];
+        byte[] content = new byte[36 + 100 * positions.size()];
         String comment = ResponseMsg.OK.getMsg();
         byte[] commentBytes = comment.getBytes();
         System.arraycopy(commentBytes, 0, content, 0, commentBytes.length);
         byte[] countBytes = ByteUtil.getBytes(count);
         System.arraycopy(countBytes, 0, content, 32, countBytes.length);
         System.arraycopy(positionBytes, 0, content, 36, positionBytes.length);
-        result.setLen(68 + 100 * count);
+        result.setLen(68 + 100 * positions.size());
         result.setUiRetCode(ResponseMsg.OK.getRetCode());
         result.setSzMagicNum(msg.getSzMagicNum());
         result.setByVersion(msg.getByVersion());

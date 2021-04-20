@@ -54,8 +54,7 @@ public class AssetService {
         asset.setExecId(execIdi);
         List<Asset> assets = assetDao.qryAsset(asset, offset, num, null, null, null);
         int count = assetDao.qryAssetCount(asset, null, null, null);
-        int contentLen = count >= num ? num : count;
-        byte[] assetBytes = new byte[100 * contentLen];
+        byte[] assetBytes = new byte[100 * assets.size()];
         int i = 0;
         for (Asset asset1 : assets) {
             ++i;
@@ -124,14 +123,14 @@ public class AssetService {
             System.arraycopy(assetByte, 0, assetBytes, (i - 1) * 100, 100);
         }
         MessageProtocol result = new MessageProtocol();
-        byte[] content = new byte[36 + 100 * contentLen];
+        byte[] content = new byte[36 + 100 * assets.size()];
         String comment = ResponseMsg.OK.getMsg();
         byte[] commentBytes = comment.getBytes();
         System.arraycopy(commentBytes, 0, content, 0, commentBytes.length);
         byte[] countBytes = ByteUtil.getBytes(count);
         System.arraycopy(countBytes, 0, content, 32, countBytes.length);
         System.arraycopy(assetBytes, 0, content, 36, assetBytes.length);
-        result.setLen(68 + 100 * count);
+        result.setLen(68 + 100 * assets.size());
         result.setUiRetCode(ResponseMsg.OK.getRetCode());
         result.setSzMagicNum(msg.getSzMagicNum());
         result.setByVersion(msg.getByVersion());

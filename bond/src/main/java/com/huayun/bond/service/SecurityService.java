@@ -36,8 +36,7 @@ public class SecurityService {
         int offset = (page - 1) * num;
         List<Security> securities = securityDao.qrySecurity(securityId, offset, num);
         int count = securityDao.qrySecurityCount(securityId);
-        int contentLen=count>=num?num:count;
-        byte[] securityBytes = new byte[102 * contentLen];
+        byte[] securityBytes = new byte[102 * securities.size()];
         int i = 0;
         for (Security security : securities) {
             ++i;
@@ -90,14 +89,14 @@ public class SecurityService {
             System.arraycopy(securityByte,0,securityBytes,(i-1)*102,102);
         }
         MessageProtocol result = new MessageProtocol();
-        byte[] content = new byte[36 + 102 * contentLen];
+        byte[] content = new byte[36 + 102 * securities.size()];
         String comment = ResponseMsg.OK.getMsg();
         byte[] commentBytes = comment.getBytes();
         System.arraycopy(commentBytes, 0, content, 0, commentBytes.length);
         byte[] countBytes = ByteUtil.getBytes(count);
         System.arraycopy(countBytes, 0, content, 32, countBytes.length);
         System.arraycopy(securityBytes, 0, content, 36, securityBytes.length);
-        result.setLen(68+102 * count);
+        result.setLen(68+102 * securities.size());
         result.setUiRetCode(ResponseMsg.OK.getRetCode());
         result.setSzMagicNum(msg.getSzMagicNum());
         result.setByVersion(msg.getByVersion());

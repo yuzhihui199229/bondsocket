@@ -208,7 +208,7 @@ public class TellerService {
         List<TellerInfo> tellerInfos = tellerDao.qryTellerInfo(tellerInfo);
         int count = tellerDao.qryTellerInfoCount(tellerInfo);
         int i = 0;
-        byte[] tellerInfoBytes = new byte[158 * count];
+        byte[] tellerInfoBytes = new byte[158 * tellerInfos.size()];
         for (TellerInfo info : tellerInfos) {
             ++i;
             byte[] infoBytes = new byte[158];
@@ -253,14 +253,14 @@ public class TellerService {
             System.arraycopy(infoBytes, 0, tellerInfoBytes, (i - 1) * 158, 158);
         }
         MessageProtocol result = new MessageProtocol();
-        byte[] content = new byte[36 + 158 * count];
+        byte[] content = new byte[36 + 158 * tellerInfos.size()];
         String comment = ResponseMsg.OK.getMsg();
         byte[] commentBytes = comment.getBytes();
         System.arraycopy(commentBytes, 0, content, 0, commentBytes.length);
         byte[] countBytes = ByteUtil.getBytes(count);
         System.arraycopy(countBytes, 0, content, 32, countBytes.length);
         System.arraycopy(tellerInfoBytes, 0, content, 36, tellerInfoBytes.length);
-        result.setLen(68 + 158 * count);
+        result.setLen(68 + 158 * tellerInfos.size());
         result.setUiRetCode(ResponseMsg.OK.getRetCode());
         result.setSzMagicNum(msg.getSzMagicNum());
         result.setByVersion(msg.getByVersion());

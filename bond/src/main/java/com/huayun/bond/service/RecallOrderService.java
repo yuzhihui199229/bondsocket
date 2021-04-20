@@ -44,8 +44,7 @@ public class RecallOrderService {
         long endTime = ByteUtil.getLong(endTimeByte);
         List<RecallOrder> recallOrders = recallOrderDao.qryRecallOrder(clOrdID, (page - 1) * num, num, startTime, endTime);
         int count = recallOrderDao.qryRecallOrderCount(clOrdID, startTime, endTime);
-        int contentLen = count >= num ? num : count;
-        byte[] recallOrderDataBytes = new byte[132 * contentLen];
+        byte[] recallOrderDataBytes = new byte[132 * recallOrders.size()];
         int i = 0;
         for (RecallOrder recallOrder : recallOrders) {
             ++i;
@@ -160,14 +159,14 @@ public class RecallOrderService {
             System.arraycopy(recallOrderDataByte, 0, recallOrderDataBytes, (i - 1) * 132, 132);
         }
         MessageProtocol result = new MessageProtocol();
-        byte[] content = new byte[36 + 132 * contentLen];
+        byte[] content = new byte[36 + 132 * recallOrders.size()];
         String comment = ResponseMsg.OK.getMsg();
         byte[] commentBytes = comment.getBytes();
         System.arraycopy(commentBytes, 0, content, 0, commentBytes.length);
         byte[] countBytes = ByteUtil.getBytes(count);
         System.arraycopy(countBytes, 0, content, 32, countBytes.length);
         System.arraycopy(recallOrderDataBytes, 0, content, 36, recallOrderDataBytes.length);
-        result.setLen(68 + 132 * count);
+        result.setLen(68 + 132 * recallOrders.size());
         result.setUiRetCode(ResponseMsg.OK.getRetCode());
         result.setSzMagicNum(msg.getSzMagicNum());
         result.setByVersion(msg.getByVersion());

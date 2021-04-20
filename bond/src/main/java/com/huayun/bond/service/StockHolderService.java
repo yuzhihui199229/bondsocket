@@ -35,7 +35,7 @@ public class StockHolderService {
         List<StockHolder> stockHolders = stockHolderDao.qryStockHolderInfo(stockHolder);
         int count = stockHolderDao.qryStockHolderInfoCount(stockHolder);
         int i = 0;
-        byte[] stockHolderBytes = new byte[64 * count];
+        byte[] stockHolderBytes = new byte[64 * stockHolders.size()];
         for (StockHolder holder : stockHolders) {
             ++i;
             byte[] stockHolderByte = new byte[64];
@@ -72,14 +72,14 @@ public class StockHolderService {
             System.arraycopy(stockHolderByte, 0, stockHolderBytes, (i - 1) * 64, 64);
         }
         MessageProtocol result = msg;
-        byte[] content = new byte[36 + 64 * count];
+        byte[] content = new byte[36 + 64 * stockHolders.size()];
         String comment = ResponseMsg.OK.getMsg();
         byte[] commentBytes = comment.getBytes();
         System.arraycopy(commentBytes, 0, content, 0, commentBytes.length);
         byte[] countBytes = ByteUtil.getBytes(count);
         System.arraycopy(countBytes, 0, content, 32, countBytes.length);
         System.arraycopy(stockHolderBytes, 0, content, 36, stockHolderBytes.length);
-        msg.setLen(68+64 * count);
+        msg.setLen(68+64 * stockHolders.size());
         msg.setUiRetCode(ResponseMsg.OK.getRetCode());
         result.setSzMagicNum(msg.getSzMagicNum());
         result.setByVersion(msg.getByVersion());

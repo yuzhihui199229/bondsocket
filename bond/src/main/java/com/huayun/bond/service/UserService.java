@@ -39,7 +39,7 @@ public class UserService {
         userInfo.setUserPropty(userPropty);
         List<UserInfo> userInfos = userDao.qryUserInfo(userInfo);
         int count = userDao.qryUserInfoCount(userInfo);
-        byte[] userInfoBytes = new byte[132 * count];
+        byte[] userInfoBytes = new byte[132 * userInfos.size()];
         int i = 0;
         for (UserInfo info : userInfos) {
             ++i;
@@ -97,14 +97,14 @@ public class UserService {
             System.arraycopy(userInfoByte, 0, userInfoBytes,(i - 1) * 132, 132);
         }
         MessageProtocol result = new MessageProtocol();
-        byte[] content = new byte[36 + 132 * count];
+        byte[] content = new byte[36 + 132 * userInfos.size()];
         String comment = ResponseMsg.OK.getMsg();
         byte[] commentBytes = comment.getBytes();
         System.arraycopy(commentBytes, 0, content, 0, commentBytes.length);
         byte[] countBytes = ByteUtil.getBytes(count);
         System.arraycopy(countBytes, 0, content, 32, countBytes.length);
         System.arraycopy(userInfoBytes, 0, content, 36, userInfoBytes.length);
-        result.setLen(68 + 132 * count);
+        result.setLen(68 + 132 * userInfos.size());
         result.setUiRetCode(ResponseMsg.OK.getRetCode());
         result.setSzMagicNum(msg.getSzMagicNum());
         result.setByVersion(msg.getByVersion());

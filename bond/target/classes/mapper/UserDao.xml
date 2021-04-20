@@ -7,10 +7,10 @@
             <if test="userId!=null and userId!=''">
                 USERID=#{userId}
             </if>
-            <if test="userPropty!=null and userPropty!=''">
+            <if test="userPropty!=null">
                 and USERPROPTY=#{userPropty}
             </if>
-            <if test="status!=null and status!=''">
+            <if test="status!=null">
                 and status=#{status}
             </if>
         </where>
@@ -22,11 +22,11 @@
             <if test="userId!=null and userId != ''">
                 USERID=#{userId}
             </if>
-            <if test="status!=null and status != ''">
-                status=#{status}
+            <if test="status!=null">
+                and status=#{status}
             </if>
-            <if test="userPropty!=null and userPropty != ''">
-                USERPROPTY=#{userPropty}
+            <if test="userPropty!=null">
+                and USERPROPTY=#{userPropty}
             </if>
         </where>
     </select>

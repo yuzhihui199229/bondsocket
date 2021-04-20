@@ -11,7 +11,7 @@
     </select>
 
     <select id="qrySecurity" resultType="security">
-        select SECURITYID as securityID, SECURITYIDSOURCE as securityIDSource,SECURITYNAME as securityName,STATUS, MINQTY as minQty,MAXQTY as maxQty, FEERATE as feeRate,TRADETIMEGROUP as tradeTimeGroup,UPDATETIME as updateTime from TB_SECURITYINFO
+        select SECURITYID as securityID, SECURITYIDSOURCE as securityIDSource,SECURITYNAME as securityName,STATUS,  FEERATE as feeRate,TRADETIMEGROUP as tradeTimeGroup,UPDATETIME as updateTime from TB_SECURITYINFO
         <where>
             <if test="securityID!=null and securityID!=''">
                 SECURITYID=#{securityID}

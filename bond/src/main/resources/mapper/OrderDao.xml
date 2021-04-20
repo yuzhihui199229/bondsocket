@@ -8,10 +8,10 @@
                 CLORDID=#{clOrdID}
             </if>
             <if test="startTime!=null and startTime!=''">
-                and TRANSACTTIME &gt;= startTime
+                and TRANSACTTIME &gt;= #{startTime}
             </if>
             <if test="endTime!=null and endTime!=''">
-                and TRANSACTTIME &lt;= endTime
+                and TRANSACTTIME &lt; #{endTime}
             </if>
         </where>
     </select>
@@ -23,10 +23,10 @@
                 CLORDID=#{clOrdID}
             </if>
             <if test="startTime!=null and startTime!=''">
-                and TRANSACTTIME &gt;= startTime
+                and TRANSACTTIME &gt;= #{startTime}
             </if>
             <if test="endTime!=null and endTime!=''">
-                and TRANSACTTIME &lt;= endTime
+                and TRANSACTTIME &lt; #{endTime}
             </if>
         </where>
         limit #{offset},#{row}

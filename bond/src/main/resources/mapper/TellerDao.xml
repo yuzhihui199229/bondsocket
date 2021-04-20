@@ -11,13 +11,13 @@
 
     <insert id="addSession">
         insert into TB_SESSION(USERID,SESSIONID,TOKEN,CREATETIME,UPDATETIME)
-        values(#{userInfo.userId},#{session},#{session},DATE_FORMAT(NOW(),'%Y%m%d%H%i%s'),DATE_FORMAT(NOW(),'%Y%m%d%H%i%s'))
+        values(#{userInfo.userId},#{session},#{session},NOW(),NOW())
     </insert>
 
     <!--获取信息-->
     <select id="getToken" resultType="session">
          SELECT USERID as userId,  SESSIONID as sessionId,TOKEN as token,CLIENTTYPE as clientType,
-          CREATETIME as createTime,UPDATETIME as updateTime,(DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')-UPDATETIME) as tokenTime
+          CREATETIME as createTime,UPDATETIME as updateTime,(NOW()-UPDATETIME) as tokenTime
           FROM TB_SESSION WHERE TOKEN = #{token}
     </select>
 
@@ -25,7 +25,7 @@
     <update id="updateToken">
         UPDATE TB_SESSION
         <set>
-            UPDATETIME=DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+            UPDATETIME=NOW()
         </set>
         WHERE TOKEN=#{token}
     </update>
@@ -51,7 +51,7 @@
             <if test="userId!=null and userId != ''">
                 USERID=#{userId}
             </if>
-            <if test="status!=null and status != ''">
+            <if test="status!=null">
                 status=#{status}
             </if>
         </where>
@@ -63,7 +63,7 @@
             <if test="userId!=null and userId != ''">
                 USERID=#{userId}
             </if>
-            <if test="status!=null and status != ''">
+            <if test="status!=null">
                 status=#{status}
             </if>
         </where>

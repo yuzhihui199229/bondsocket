@@ -26,24 +26,27 @@ public class RecallOrderService {
         byte[] clOrdIDByte = new byte[11];
         System.arraycopy(buf, 32, clOrdIDByte, 0, 10);
         String clOrdID = ByteUtil.getString(clOrdIDByte);
+        byte[] securityBytes = new byte[9];
+        System.arraycopy(buf, 42, securityBytes, 0, 8);
+        String securityId = ByteUtil.getString(securityBytes);
         //转化为page
         byte[] pageByte = new byte[4];
-        System.arraycopy(buf, 42, pageByte, 0, 4);
+        System.arraycopy(buf, 50, pageByte, 0, 4);
         int page = ByteUtil.getInt(pageByte);
         //转化为num
         byte[] numByte = new byte[4];
-        System.arraycopy(buf, 46, numByte, 0, 4);
+        System.arraycopy(buf, 54, numByte, 0, 4);
         int num = ByteUtil.getInt(numByte);
         //startTime
         byte[] startTimeByte = new byte[8];
-        System.arraycopy(buf, 50, startTimeByte, 0, 8);
+        System.arraycopy(buf, 58, startTimeByte, 0, 8);
         long startTime = ByteUtil.getLong(startTimeByte);
         //endTime
         byte[] endTimeByte = new byte[8];
-        System.arraycopy(buf, 58, endTimeByte, 0, 8);
+        System.arraycopy(buf, 66, endTimeByte, 0, 8);
         long endTime = ByteUtil.getLong(endTimeByte);
-        List<RecallOrder> recallOrders = recallOrderDao.qryRecallOrder(clOrdID, (page - 1) * num, num, startTime, endTime);
-        int count = recallOrderDao.qryRecallOrderCount(clOrdID, startTime, endTime);
+        List<RecallOrder> recallOrders = recallOrderDao.qryRecallOrder(clOrdID,securityId, (page - 1) * num, num, startTime, endTime);
+        int count = recallOrderDao.qryRecallOrderCount(clOrdID,securityId, startTime, endTime);
         byte[] recallOrderDataBytes = new byte[132 * recallOrders.size()];
         int i = 0;
         for (RecallOrder recallOrder : recallOrders) {

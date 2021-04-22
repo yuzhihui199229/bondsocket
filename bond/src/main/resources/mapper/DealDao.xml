@@ -2,16 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.huayun.bond.dao.DealDao">
     <select id="qryDealCount" resultType="int">
-        select count(1) as count from TB_200115
+        select count(1) as count from TB_200115 a,TB_200102 b
         <where>
             <if test="clOrdID!=null and clOrdID!=''">
                 CLORDID=#{clOrdID}
             </if>
+            and a.CLORDID=b.CLORDID
+            <if test="execID!=null and execID!=''">
+                and a.EXECID=#{execID}
+            </if>
             <if test="startTime!=null and startTime!=''">
-                and TRANSACTTIME &gt;= #{startTime}
+                and a.TRANSACTTIME &gt;= #{startTime}
             </if>
             <if test="endTime!=null and endTime!=''">
-                and TRANSACTTIME &lt; #{endTime}
+                and a.TRANSACTTIME &lt; #{endTime}
             </if>
         </where>
     </select>
@@ -68,6 +72,9 @@
                 CLORDID=#{clOrdID}
             </if>
             and a.CLORDID=b.CLORDID
+            <if test="execID!=null and execID!=''">
+                and a.EXECID=#{execID}
+            </if>
             <if test="startTime!=null and startTime!=''">
                 and a.TRANSACTTIME &gt;= #{startTime}
             </if>

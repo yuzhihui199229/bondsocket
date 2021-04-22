@@ -41,7 +41,7 @@ public class AssetService {
         System.arraycopy(buf, 88, numBytes, 0, 4);
         int num = ByteUtil.getInt(numBytes);
         byte[] startTimeBytes = new byte[8];
-        System.arraycopy(buf, 82, startTimeBytes, 0, 8);
+        System.arraycopy(buf, 92, startTimeBytes, 0, 8);
         long startTime = ByteUtil.getLong(startTimeBytes);
         byte[] endTimeBytes = new byte[8];
         System.arraycopy(buf, 100, endTimeBytes, 0, 8);
@@ -52,8 +52,8 @@ public class AssetService {
         asset.setSecurityId(securityIdt);
         asset.setId(idi);
         asset.setExecId(execIdi);
-        List<Asset> assets = assetDao.qryAsset(asset, offset, num, null, null, null);
-        int count = assetDao.qryAssetCount(asset, null, null, null);
+        List<Asset> assets = assetDao.qryAsset(asset, offset, num, userIdi, startTime, endTime);
+        int count = assetDao.qryAssetCount(asset, userIdi, startTime, endTime);
         byte[] assetBytes = new byte[100 * assets.size()];
         int i = 0;
         for (Asset asset1 : assets) {

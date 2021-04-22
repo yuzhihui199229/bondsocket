@@ -27,22 +27,26 @@ public class DealService {
         byte[] clOrdIDByte = new byte[11];
         System.arraycopy(buf, 32, clOrdIDByte, 0, 10);
         String clOrdID = ByteUtil.getString(clOrdIDByte);
+        //成交类型
+        byte[] execIDBytes = new byte[17];
+        System.arraycopy(buf,42,execIDBytes,0,16);
+        String execID1 = ByteUtil.getString(execIDBytes);
         //转化为page
         byte[] pageByte = new byte[4];
-        System.arraycopy(buf, 42, pageByte, 0, 4);
+        System.arraycopy(buf, 58, pageByte, 0, 4);
         int page = ByteUtil.getInt(pageByte);
         //转化为num
         byte[] numByte = new byte[4];
-        System.arraycopy(buf, 46, numByte, 0, 4);
+        System.arraycopy(buf, 62, numByte, 0, 4);
         int num = ByteUtil.getInt(numByte);
         byte[] startTimeByte = new byte[8];
-        System.arraycopy(buf, 50, startTimeByte, 0, 8);
+        System.arraycopy(buf, 66, startTimeByte, 0, 8);
         long startTime = ByteUtil.getLong(startTimeByte);
         byte[] endTimeByte = new byte[8];
-        System.arraycopy(buf, 58, endTimeByte, 0, 8);
+        System.arraycopy(buf, 74, endTimeByte, 0, 8);
         long endTime = ByteUtil.getLong(endTimeByte);
-        List<Deal> deals = dealDao.qryDeal(clOrdID, (page - 1) * num, num, startTime, endTime);
-        int count = dealDao.qryDealCount(clOrdID, startTime, endTime);
+        List<Deal> deals = dealDao.qryDeal(clOrdID, execID1,(page - 1) * num, num, startTime, endTime);
+        int count = dealDao.qryDealCount(clOrdID,execID1, startTime, endTime);
         byte[] dealBytes = new byte[211 * deals.size()];
         int i = 0;
         //数据转化

@@ -7,6 +7,9 @@
             <if test="clOrdID!=null and clOrdID!=''">
                 CLORDID=#{clOrdID}
             </if>
+            <if test="secufityID!=null and secufityID!=''">
+                and SECURITYID=#{secufityID}
+            </if>
             <if test="startTime!=null and startTime!=''">
                 and TRANSACTTIME &gt;= #{startTime}
             </if>
@@ -17,10 +20,18 @@
     </select>
 
     <select id="qryOrder" resultType="order">
-        select SUBMITTINGPBUID as SUBMITTINGPBUID,SECURITYID as securityID, SECURITYIDSOURCE as securityIDSource,OWNERTYPE as ownerType, CLEARINGFIRM as clearingFirm,TRANSACTTIME as transactTime, USERINFO as userInfo,CLORDID as clOrdID,ACCOUNTID as accountID, BRANCHID as branchID,ORDERRESTRICTIONS as orderRestrictions,side,ORDTYPE as ordType, ORDERQTY as orderQty,price,STOPPX as stopPx,MINQTY as minQty,MAXPRICELEVELS as maxPriceLevels, TIMEINFORCE as timeInforce,CASHMARGIN as cashMargin,ORDSTATUS as ordStatus from TB_100101
+        select SUBMITTINGPBUID as SUBMITTINGPBUID,SECURITYID as securityID, SECURITYIDSOURCE as
+        securityIDSource,OWNERTYPE as ownerType, CLEARINGFIRM as clearingFirm,TRANSACTTIME as transactTime, USERINFO as
+        userInfo,CLORDID as clOrdID,ACCOUNTID as accountID, BRANCHID as branchID,ORDERRESTRICTIONS as
+        orderRestrictions,side,ORDTYPE as ordType, ORDERQTY as orderQty,price,STOPPX as stopPx,MINQTY as
+        minQty,MAXPRICELEVELS as maxPriceLevels, TIMEINFORCE as timeInforce,CASHMARGIN as cashMargin,ORDSTATUS as
+        ordStatus from TB_100101
         <where>
             <if test="clOrdID!=null and clOrdID!=''">
                 CLORDID=#{clOrdID}
+            </if>
+            <if test="secufityID!=null and secufityID!=''">
+                and SECURITYID=#{secufityID}
             </if>
             <if test="startTime!=null and startTime!=''">
                 and TRANSACTTIME &gt;= #{startTime}

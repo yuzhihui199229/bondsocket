@@ -76,7 +76,10 @@
                 AND a.id=#{asset.id}
             </if>
             <if test="asset.securityId!=null and asset.securityId!=''">
-                AND a.EXECID=#{asset.securityId}
+                AND a.SECURITYID=#{asset.securityId}
+            </if>
+            <if test="asset.execId!=null and asset.execId!=''">
+                AND a.EXECID=#{asset.execId}
             </if>
             <if test="startTime!=null and startTime!=''">
                 and a.CREATETIME &gt;= #{startTime}

@@ -8,6 +8,9 @@
                 CLORDID=#{clOrdID}
             </if>
             and a.CLORDID=b.CLORDID
+            <if test="secufityID!=null and secufityID!=''">
+                and a.SECURITYID=#{secufityID}
+            </if>
             <if test="startTime!=null and startTime!=''">
                 and TRANSACTTIME &gt;= startTime
             </if>
@@ -58,6 +61,9 @@
                 a.CLORDID=#{clOrdID}
             </if>
             and a.CLORDID=b.CLORDID
+            <if test="secufityID!=null and secufityID!=''">
+                and a.SECURITYID=#{secufityID}
+            </if>
             <if test="startTime!=null and startTime!=''">
                 and a.TRANSACTTIME &gt;= #{startTime}
             </if>

@@ -5,11 +5,14 @@
         select count(1) as count from TB_200115 a,TB_200102 b
         <where>
             <if test="clOrdID!=null and clOrdID!=''">
-                CLORDID=#{clOrdID}
+                a.CLORDID=#{clOrdID}
             </if>
             and a.CLORDID=b.CLORDID
             <if test="execID!=null and execID!=''">
                 and a.EXECID=#{execID}
+            </if>
+            <if test="securityID!=null and securityID!=''">
+                and a.SECURITYID=#{securityID}
             </if>
             <if test="startTime!=null and startTime!=''">
                 and a.TRANSACTTIME &gt;= #{startTime}
@@ -69,11 +72,14 @@
         b.TIMEINFORCE as timeInforce ,b.ORIGCLORDID as origClOrdId,b.ORDERID as OrigorderId from TB_200115 a,TB_200102 b
         <where>
             <if test="clOrdID!=null and clOrdID!=''">
-                CLORDID=#{clOrdID}
+                a.CLORDID=#{clOrdID}
             </if>
             and a.CLORDID=b.CLORDID
             <if test="execID!=null and execID!=''">
                 and a.EXECID=#{execID}
+            </if>
+            <if test="securityID!=null and securityID!=''">
+                and a.SECURITYID=#{securityID}
             </if>
             <if test="startTime!=null and startTime!=''">
                 and a.TRANSACTTIME &gt;= #{startTime}

@@ -26,17 +26,17 @@ public class UserService {
         System.arraycopy(buf, 32, userByte, 0, 12);
         String userId = ByteUtil.getString(userByte);
         //转化为status
-        byte[] statusByte = new byte[2];
+        byte[] statusByte=new byte[3];
         System.arraycopy(buf, 44, statusByte, 0, 2);
-        short statusShort = ByteUtil.getShort(statusByte);
+        char statusChar = ByteUtil.getChar(statusByte);
         //转化为userPropty
-        byte[] userProptyByte = new byte[2];
-        System.arraycopy(buf, 46, userProptyByte, 0, 2);
-        Short userPropty = ByteUtil.getShort(userProptyByte);
+        byte[] userproptyByte=new byte[3];
+        System.arraycopy(buf, 46, userproptyByte, 0, 2);
+        char userproptychar = ByteUtil.getChar(userproptyByte);
         UserInfo userInfo = new UserInfo();
         userInfo.setUserId(userId);
-        userInfo.setStatus(statusShort);
-        userInfo.setUserPropty(userPropty);
+        userInfo.setStatus(statusChar);
+        userInfo.setUserPropty(userproptychar);
         List<UserInfo> userInfos = userDao.qryUserInfo(userInfo);
         int count = userDao.qryUserInfoCount(userInfo);
         byte[] userInfoBytes = new byte[132 * userInfos.size()];
@@ -74,12 +74,12 @@ public class UserService {
                 byte[] bytes = userAccount.getBytes("UTF-8");
                 System.arraycopy(bytes, 0, userInfoByte, 100, bytes.length);
             }
-            Short userPropty1 = info.getUserPropty();
-            if (userPropty1 != null) {
+            Character userPropty1 = info.getUserPropty();
+            if (userPropty1!=null) {
                 byte[] bytes = ByteUtil.getBytes(userPropty1);
-                System.arraycopy(bytes, 0, userInfoByte, 112, bytes.length);
+                System.arraycopy(bytes,0,userInfoByte,112,bytes.length);
             }
-            Short status = info.getStatus();
+            Character status = info.getStatus();
             if (status != null) {
                 byte[] bytes = ByteUtil.getBytes(status);
                 System.arraycopy(bytes, 0, userInfoByte, 114, bytes.length);

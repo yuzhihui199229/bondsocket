@@ -5,6 +5,9 @@ import com.huayun.bond.pojo.MessageProtocol;
 import com.huayun.bond.pojo.Order;
 import com.huayun.bond.pojo.ResponseMsg;
 import com.huayun.bond.util.ByteUtil;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,6 +60,7 @@ public class OrderService {
             byte[] orderDataByte = new byte[107];
             String submittingPBUID = order.getSubmittingPBUID();
             if (submittingPBUID != null) {
+                Unpooled.copiedBuffer(submittingPBUID, 0, 6, CharsetUtil.UTF_8);
                 byte[] submittingbytes = submittingPBUID.getBytes("UTF-8");
                 System.arraycopy(submittingbytes, 0, orderDataByte, 0, submittingbytes.length);
             }

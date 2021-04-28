@@ -12,8 +12,8 @@ public class UserInfo implements Serializable {
     private String userpassword;
     private String phone;
     private String userAccount;
-    private Short userPropty;
-    private Short status;
+    private Character userPropty;
+    private Character status;
     private Long createTime;
     private Long updateTime;
 }

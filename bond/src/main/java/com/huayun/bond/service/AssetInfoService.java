@@ -5,6 +5,8 @@ import com.huayun.bond.pojo.AssetInfo;
 import com.huayun.bond.pojo.MessageProtocol;
 import com.huayun.bond.pojo.ResponseMsg;
 import com.huayun.bond.util.ByteUtil;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

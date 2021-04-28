@@ -7,10 +7,10 @@
             <if test="userId!=null and userId!=''">
                 USERID=#{userId}
             </if>
-            <if test="userPropty!=null">
+            <if test="userPropty!=null and status!=''">
                 and USERPROPTY=#{userPropty}
             </if>
-            <if test="status!=null">
+            <if test="status!=null and userPropty!=''">
                 and status=#{status}
             </if>
         </where>
@@ -22,10 +22,10 @@
             <if test="userId!=null and userId != ''">
                 USERID=#{userId}
             </if>
-            <if test="status!=null">
+            <if test="status!=null and status!=''">
                 and status=#{status}
             </if>
-            <if test="userPropty!=null">
+            <if test="userPropty!=null and userPropty!=''">
                 and USERPROPTY=#{userPropty}
             </if>
         </where>

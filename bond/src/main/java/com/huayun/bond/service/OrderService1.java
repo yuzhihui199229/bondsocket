@@ -34,7 +34,9 @@ public class OrderService1 {
         long endTime = byteBuf.readLong();
         List<Order> orders = orderDao.qryOrder(clOrdID, securityId, (page - 1) * num, num, startTime, endTime);
         int count = orderDao.qryOrderCount(clOrdID, securityId, startTime, endTime);
-        ByteBuf buffer = Unpooled.buffer(107 * orders.size());
+        ByteBuf buffer = Unpooled.buffer(107 * orders.size()+36);
+        buffer.writeBytes(Unpooled.copiedBuffer("查询成功",0,32,CharsetUtil.UTF_8));
+        buffer.writeInt(count);
         //数据转化为byte[]
         for (Order order : orders) {
             buffer.writeBytes(Unpooled.copiedBuffer(order.getSubmittingPBUID(),0,6,CharsetUtil.UTF_8),6);
@@ -71,7 +73,7 @@ public class OrderService1 {
         result.setUiMsgSeq(msg.getUiMsgSeq());
         result.setUiMktCode(msg.getUiMktCode());
         result.setByReserved(msg.getByReserved());
-        byte[] content=new byte[orders.size()*107];
+        byte[] content=new byte[orders.size()*107+36];
         buffer.readBytes(content);
         result.setContent(content);
         return result;
